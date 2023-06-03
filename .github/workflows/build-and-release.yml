@@ -51,7 +51,7 @@ jobs:
 
       - name: Edit Config
         run: |
-          sed -i '' -e "s|\"https://matrix.org\"|\"https://${HOMESERVER}\"|g" element-ios/Config/BuildSettings.swift
+          sed -i "s#\"https://matrix.org\"#\"https://${HOMESERVER}\"#g" element-ios/Config/BuildSettings.swift
         env:
           HOMESERVER: ${{ secrets.HOMESERVER }}
 
@@ -60,7 +60,7 @@ jobs:
 
           # Changes in Config/AppIdentifiers
 
-          sed -i '' 's/BUNDLE_DISPLAY_NAME = Element/BUNDLE_DISPLAY_NAME = ${BUNDLE_DISPLAY_NAME}/g' element-ios/Config/AppIdentifiers.xcconfig
+          sed -i "s#BUNDLE_DISPLAY_NAME = Element#BUNDLE_DISPLAY_NAME = ${BUNDLE_DISPLAY_NAME}#g" element-ios/Config/AppIdentifiers.xcconfig
           sed -i '' 's/BASE_BUNDLE_IDENTIFIER = im.vector.app/BASE_BUNDLE_IDENTIFIER = ${BASE_BUNDLE_IDENTIFIER}/g' element-ios/Config/AppIdentifiers.xcconfig
           sed -i '' 's/APPLICATION_GROUP_IDENTIFIER = group.im.vector/APPLICATION_GROUP_IDENTIFIER = ${GROUP_ID}/g' element-ios/Config/AppIdentifiers.xcconfig
           sed -i '' 's/DEVELOPMENT_TEAM = 7J4U792NQT/DEVELOPMENT_TEAM = ${TEAM_ID}/g' element-ios/Config/AppIdentifiers.xcconfig
