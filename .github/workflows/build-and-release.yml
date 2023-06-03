@@ -115,7 +115,7 @@ jobs:
 
       - name: Update deliver command in Fastfile
         run: |
-          sed -i 's/deliver()/deliver(skip_metadata: true, skip_screenshots: true)/g' fastlane/Fastfile
+          sed -i '' 's/deliver()/deliver(skip_metadata: true, skip_screenshots: true)/g' fastlane/Fastfile
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
