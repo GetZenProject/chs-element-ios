@@ -1,0 +1,117 @@
+name: Build And Release to App Store
+
+on:
+  # Triggers the workflow on any pull request and push to develop
+  # push:
+  #   branches: [ develop ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  # Make the git branch for a PR available to our Fastfile
+  MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-12
+    
+    # Concurrency group not needed as this workflow only runs on develop which we always want to test.
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Common cache
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      # Make sure we use the latest version of MatrixSDK
+      - name: Reset MatrixSDK pod
+        run: rm -rf Pods/MatrixSDK
+
+      # - name: Prepare Element IOS
+      #   run: |
+      #     git clone https://github.com/vector-im/element-ios.git
+      #     cd element-ios
+      #     git checkout master
+      #     cd ..
+
+      #     ВОТ ТУТ РАЗВЕ НЕ .github НАДО??? rm -rf element-ios/.git
+
+      # - name: Edit Config
+      #   run: |
+      #  ИЗМЕНИТЬ ЗДЕСЬ (В этом файле (Config/BuildSettings.swift) еще есть matrix.org, нужно менять только один конкретный)      sed -i "s#matrix.org#$HOMESERVER#1" element-ios/Config/BuildSettings.swift
+      #   env:
+      #     HOMESERVER: ${{ secrets.HOMESERVER }}
+
+      # - name: Prepare Repo
+      #   run: | ИЗМЕНИТЬ ЗДЕСЬ   
+      # 
+      #   ИЗМЕНЕНИЯ:
+      # 
+      #     В Config/AppIdentifiers.xcconfig:
+      #         1. BUNDLE_DISPLAY_NAME c Element на secrets.BUNDLE_DISPLAY_NAME
+      #         2. BASE_BUNDLE_IDENTIFIER c im.vector.app на secrets.BASE_BUNDLE_IDENTIFIER
+      #         3. APPLICATION_GROUP_IDENTIFIER c group.im.vector на secrets.GROUP_ID
+      #         4. DEVELOPMENT_TEAM c 7J4U792NQT на secrets.TEAM_ID
+      #         5. RIOT_PROVISIONING_PROFILE_SPECIFIER c Vector App Store на secrets.MAIN_PROVISIONING_PROFILE_NAME (в кавычках)
+      #         6. NSE_PROVISIONING_PROFILE_SPECIFIER c "Vector NSE: App Store" на secrets.NSE_PROVISIONING_PROFILE_NAME (в кавычках)
+      #         7. SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER c "Vector Share Extension: App Store" на secrets.SHARE_EXTENSION_PROVISIONING_PROFILE_NAME (в кавычках)
+      #         8. SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER c "Vector Siri Intents: App Store" на secrets.SIRI_INTENTS_PROVISIONING_PROFILE_NAME (в кавычках)
+      # 
+      #     В fastlane/.env/default:
+      #         1. IPA_NAME с Riot на CustomElement 
+      #         2. MAIN_BUNDLE_ID c im.vector.app на secrets.BASE_BUNDLE_IDENTIFIER
+      #         3. SHARE_EXTENSION_BUNDLE_ID c im.vector.app.shareExtension на secrets.BASE_BUNDLE_IDENTIFIER к которому приписали .shareExtension
+      #         4. SIRI_INTENTS_EXTENSION_BUNDLE_ID c im.vector.app.SiriIntents на secrets.BASE_BUNDLE_IDENTIFIER к которому приписали .SiriIntents
+      #         5. NSE_BUNDLE_ID c im.vector.app.nse на secrets.BASE_BUNDLE_IDENTIFIER к которому приписали .nse
+      #         6. APPSTORE_CODESIGNING_IDENTITY и APPSTORE_SIGNING_CERTIFICATE с "Apple Distribution: Vector Creations Limited (7J4U792NQT)" на secrets.DISTRIBUTION_CERTIFICATE_NAME (в кавычках)
+      #         7. APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER c "Vector App Store" на secrets.MAIN_PROVISIONING_PROFILE_NAME (в кавычках)
+      #         8. APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER c "Vector NSE: App Store" на secrets.NSE_PROVISIONING_PROFILE_NAME (в кавычках)
+      #         9. APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER c "Vector Share Extension: App Store" на secrets.SHARE_EXTENSION_PROVISIONING_PROFILE_NAME (в кавычках)
+      #         10. APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER c "Vector Siri Intents: App Store" на secrets.SIRI_INTENTS_PROVISIONING_PROFILE_NAME (в кавычках)
+      #         11. TEAM_ID c 7J4U792NQT на secrets.TEAM_ID
+      # 
+      #     Задокументировать/удалить 3 строчки в Fastfile
+      # 
+      #     Возможно в Riot/SupportingFiles/Info.plist понадобится менять несколько строк подряд, если да - будем сохранять файл и делать замену
+      # 
+      #   env:
+      #     ...
+
+      # Common setup
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - name: Brew bundle
+        run: brew bundle
+      - name: Bundle install
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+      - name: Use right MatrixSDK versions
+        run: bundle exec fastlane point_dependencies_to_related_branches
+
+      # Import private signing certificate
+      - name: Import signing certificate
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.CERTIFICATE_P12 }}
+          p12-password: ${{ secrets.CERTIFICATE_P12_PASSWORD }}
+
+      # Main step
+      - name: Deploy and release IOS app 
+        run: bundle exec fastlane deploy_release 
+        env:
+          APPSTORECONNECT_KEY_ID: ${{ secrets.APPSTORECONNECT_KEY_ID }}
+          APPSTORECONNECT_KEY_ISSUER_ID: ${{ secrets.APPSTORECONNECT_KEY_ISSUER_ID }}
+          APPSTORECONNECT_KEY_CONTENT: ${{ secrets.APPSTORECONNECT_KEY_CONTENT }}
