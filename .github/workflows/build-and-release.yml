@@ -66,7 +66,7 @@ jobs:
           sed -i '' -e "s#DEVELOPMENT_TEAM = 7J4U792NQT#DEVELOPMENT_TEAM = ${TEAM_ID}#g" element-ios/Config/AppIdentifiers.xcconfig
           
           sed -i '' -e "s#RIOT_PROVISIONING_PROFILE_SPECIFIER = Vector App Store#RIOT_PROVISIONING_PROFILE_SPECIFIER = \"${MAIN_PROVISIONING_PROFILE_NAME}\"#g" element-ios/Config/AppIdentifiers.xcconfig
-          sed -i '' -e "s#NSE_PROVISIONING_PROFILE_SPECIFIER = \"Vector NSE: App Store"#NSE_PROVISIONING_PROFILE_SPECIFIER = \"${NSE_PROVISIONING_PROFILE_NAME}\"#g" element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' -e "s#NSE_PROVISIONING_PROFILE_SPECIFIER = \"Vector NSE: App Store\"#NSE_PROVISIONING_PROFILE_SPECIFIER = \"${NSE_PROVISIONING_PROFILE_NAME}\"#g" element-ios/Config/AppIdentifiers.xcconfig
           sed -i '' -e "s#SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = \"Vector Share Extension: App Store\"#SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = \"${SHARE_EXTENSION_PROVISIONING_PROFILE_NAME}\"#g" element-ios/Config/AppIdentifiers.xcconfig
           sed -i '' -e "s#SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER = \"Vector Siri Intents: App Store\"#SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER = \"${SIRI_INTENTS_PROVISIONING_PROFILE_NAME}\"#g" element-ios/Config/AppIdentifiers.xcconfig
           
