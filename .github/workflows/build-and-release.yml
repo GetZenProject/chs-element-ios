@@ -105,15 +105,13 @@ jobs:
           DISTRIBUTION_CERTIFICATE_NAME: ${{ secrets.DISTRIBUTION_CERTIFICATE_NAME }}
 
       # Возможно в Riot/SupportingFiles/Info.plist на самом деле нужно будет менять только значение ключа ITSEncryptionExportComplianceCode, а не весь блок 
-      - name: Update encryption keys
-        run: |
-          sed -i 's/<key>ITSAppUsesNonExemptEncryption<\/key>\n\s*<true\/>\n\s*<key>ITSEncryptionExportComplianceCode<\/key>\n\s*<string>d1dd539c-d21c-43e2-92e2-212c5269565c<\/string>/<key>ITSAppUsesNonExemptEncryption<\/key>\n  <false\/>/g' element-ios/Riot/SupportingFiles/Info.plist
-
       - name: Merge Repositories
         run: |
           mv element-ios/* ./
           rm fastlane/Fastfile
+          rm Riot/SupportingFiles/Info.plist
           mv Fastfile fastlane/Fastfile
+          mv Info.plist Riot/SupportingFiles/Info.plist
 
       - name: Update deliver command in Fastfile
         run: |
