@@ -61,36 +61,36 @@ jobs:
           # Changes in Config/AppIdentifiers
 
           sed -i '' -e "s#BUNDLE_DISPLAY_NAME = Element#BUNDLE_DISPLAY_NAME = ${BUNDLE_DISPLAY_NAME}#g" element-ios/Config/AppIdentifiers.xcconfig
-          sed -i '' 's/BASE_BUNDLE_IDENTIFIER = im.vector.app/BASE_BUNDLE_IDENTIFIER = ${BASE_BUNDLE_IDENTIFIER}/g' element-ios/Config/AppIdentifiers.xcconfig
-          sed -i '' 's/APPLICATION_GROUP_IDENTIFIER = group.im.vector/APPLICATION_GROUP_IDENTIFIER = ${GROUP_ID}/g' element-ios/Config/AppIdentifiers.xcconfig
-          sed -i '' 's/DEVELOPMENT_TEAM = 7J4U792NQT/DEVELOPMENT_TEAM = ${TEAM_ID}/g' element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' -e "s#BASE_BUNDLE_IDENTIFIER = im.vector.app#BASE_BUNDLE_IDENTIFIER = ${BASE_BUNDLE_IDENTIFIER}#g" element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' -e "s#APPLICATION_GROUP_IDENTIFIER = group.im.vector#APPLICATION_GROUP_IDENTIFIER = ${GROUP_ID}#g" element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' -e "s#DEVELOPMENT_TEAM = 7J4U792NQT#DEVELOPMENT_TEAM = ${TEAM_ID}#g" element-ios/Config/AppIdentifiers.xcconfig
           
-          sed -i '' 's/RIOT_PROVISIONING_PROFILE_SPECIFIER = Vector App Store/RIOT_PROVISIONING_PROFILE_SPECIFIER = "${MAIN_PROVISIONING_PROFILE_NAME}"/g' element-ios/Config/AppIdentifiers.xcconfig
-          sed -i '' 's/NSE_PROVISIONING_PROFILE_SPECIFIER = "Vector NSE: App Store"/NSE_PROVISIONING_PROFILE_SPECIFIER = "${NSE_PROVISIONING_PROFILE_NAME}"/g' element-ios/Config/AppIdentifiers.xcconfig
-          sed -i '' 's/SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = "Vector Share Extension: App Store"/SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = "${SHARE_EXTENSION_PROVISIONING_PROFILE_NAME}"/g' element-ios/Config/AppIdentifiers.xcconfig
-          sed -i '' 's/SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER = "Vector Siri Intents: App Store"/SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER = "${SIRI_INTENTS_PROVISIONING_PROFILE_NAME}"/g' element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' -e "s#RIOT_PROVISIONING_PROFILE_SPECIFIER = Vector App Store#RIOT_PROVISIONING_PROFILE_SPECIFIER = \"${MAIN_PROVISIONING_PROFILE_NAME}\"#g" element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' -e "s#NSE_PROVISIONING_PROFILE_SPECIFIER = \"Vector NSE: App Store"#NSE_PROVISIONING_PROFILE_SPECIFIER = \"${NSE_PROVISIONING_PROFILE_NAME}\"#g" element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' -e "s#SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = \"Vector Share Extension: App Store\"#SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = \"${SHARE_EXTENSION_PROVISIONING_PROFILE_NAME}\"#g" element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' -e "s#SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER = \"Vector Siri Intents: App Store\"#SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER = \"${SIRI_INTENTS_PROVISIONING_PROFILE_NAME}\"#g" element-ios/Config/AppIdentifiers.xcconfig
           
           # Changes in fastlane/.env.default
 
-          sed -i '' 's/IPA_NAME=Riot/IPA_NAME=CustomElement/g' element-ios/fastlane/.env.default
+          sed -i '' -e "s#IPA_NAME=Riot#IPA_NAME=CustomElement#g" element-ios/fastlane/.env.default
 
           # Bundle_id
-          sed -i '' 's/MAIN_BUNDLE_ID=im.vector.app/MAIN_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}/g' element-ios/fastlane/.env.default
-          sed -i '' 's/SHARE_EXTENSION_BUNDLE_ID=im.vector.app.shareExtension/SHARE_EXTENSION_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.shareExtension/g' element-ios/fastlane/.env.default
-          sed -i '' 's/SIRI_INTENTS_EXTENSION_BUNDLE_ID=im.vector.app.SiriIntents/SIRI_INTENTS_EXTENSION_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.SiriIntents/g' element-ios/fastlane/.env.default
-          sed -i '' 's/NSE_BUNDLE_ID=im.vector.app.nse/NSE_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.nse/g' element-ios/fastlane/.env.default
+          sed -i '' -e "s#MAIN_BUNDLE_ID=im.vector.app#MAIN_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}#g" element-ios/fastlane/.env.default
+          sed -i '' -e "s#SHARE_EXTENSION_BUNDLE_ID=im.vector.app.shareExtension#SHARE_EXTENSION_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.shareExtension#g" element-ios/fastlane/.env.default
+          sed -i '' -e "s#SIRI_INTENTS_EXTENSION_BUNDLE_ID=im.vector.app.SiriIntents#SIRI_INTENTS_EXTENSION_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.SiriIntents#g" element-ios/fastlane/.env.default
+          sed -i '' -e "s#NSE_BUNDLE_ID=im.vector.app.nse#NSE_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.nse#g" element-ios/fastlane/.env.default
           
           # Code Signing
-          sed -i '' 's/APPSTORE_CODESIGNING_IDENTITY="Apple Distribution: Vector Creations Limited (7J4U792NQT)"/APPSTORE_CODESIGNING_IDENTITY="${DISTRIBUTION_CERTIFICATE_NAME}"/g' element-ios/fastlane/.env.default
-          sed -i '' 's/APPSTORE_SIGNING_CERTIFICATE="Apple Distribution: Vector Creations Limited (7J4U792NQT)"/APPSTORE_SIGNING_CERTIFICATEs="${DISTRIBUTION_CERTIFICATE_NAME}"/g' element-ios/fastlane/.env.default
+          sed -i '' -e "s#APPSTORE_CODESIGNING_IDENTITY=\"Apple Distribution: Vector Creations Limited (7J4U792NQT)\"#APPSTORE_CODESIGNING_IDENTITY=\"${DISTRIBUTION_CERTIFICATE_NAME}\"#g" element-ios/fastlane/.env.default
+          sed -i '' -e "s#APPSTORE_SIGNING_CERTIFICATE=\"Apple Distribution: Vector Creations Limited (7J4U792NQT)\"#APPSTORE_SIGNING_CERTIFICATEs=\"${DISTRIBUTION_CERTIFICATE_NAME}\"#g" element-ios/fastlane/.env.default
           
           # Provisioning profiles
-          sed -i '' 's/APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER="Vector App Store"/APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER="${MAIN_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
-          sed -i '' 's/APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER="Vector NSE: App Store"/APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER="${NSE_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
-          sed -i '' 's/APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="Vector Share Extension: App Store"/APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="${SHARE_EXTENSION_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
-          sed -i '' 's/APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="Vector Siri Intents: App Store"/APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="${SIRI_INTENTS_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
+          sed -i '' -e "s#APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER=\"Vector App Store\"#APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER=\"${MAIN_PROVISIONING_PROFILE_NAME}\"#g" element-ios/fastlane/.env.default
+          sed -i '' -e "s#APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER=\"Vector NSE: App Store\"#APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER=\"${NSE_PROVISIONING_PROFILE_NAME}\"#g" element-ios/fastlane/.env.default
+          sed -i '' -e "s#APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER=\"Vector Share Extension: App Store\"#APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER=\"${SHARE_EXTENSION_PROVISIONING_PROFILE_NAME}\"#g" element-ios/fastlane/.env.default
+          sed -i '' -e "s#APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER=\"Vector Siri Intents: App Store\"#APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER=\"${SIRI_INTENTS_PROVISIONING_PROFILE_NAME}\"#g" element-ios/fastlane/.env.default
           
-          sed -i '' 's/TEAM_ID=7J4U792NQT/TEAM_ID=${TEAM_ID}/g' element-ios/fastlane/.env.default
+          sed -i '' -e "s#TEAM_ID=7J4U792NQT#TEAM_ID=${TEAM_ID}#g" element-ios/fastlane/.env.default
         
         env:
           BUNDLE_DISPLAY_NAME: ${{ secrets.BUNDLE_DISPLAY_NAME }}
@@ -120,8 +120,8 @@ jobs:
       - name: Delete Diawi plugin 
         run: |
           sed -i '' "/gem 'fastlane-plugin-diawi'/d" fastlane/Pluginfile
-          sed -i '' '/fastlane-plugin-diawi (2.1.0)/d' Gemfile.lock
-          sed -i '' '/fastlane-plugin-diawi/d' Gemfile.lock
+          sed -i '' -e '/fastlane-plugin-diawi (2.1.0)/d' Gemfile.lock
+          sed -i '' -e '/fastlane-plugin-diawi/d' Gemfile.lock
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
