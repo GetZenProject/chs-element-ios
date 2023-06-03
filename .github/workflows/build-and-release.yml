@@ -90,7 +90,6 @@ jobs:
           sed -i '' 's/APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="Vector Share Extension: App Store"/APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="${SHARE_EXTENSION_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
           sed -i '' 's/APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="Vector Siri Intents: App Store"/APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="${SIRI_INTENTS_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
           
-          
           sed -i '' 's/TEAM_ID=7J4U792NQT/TEAM_ID=${TEAM_ID}/g' element-ios/fastlane/.env.default
         
         env:
@@ -103,6 +102,11 @@ jobs:
           SHARE_EXTENSION_PROVISIONING_PROFILE_NAME: ${{ secrets.SHARE_EXTENSION_PROVISIONING_PROFILE_NAME }}
           SIRI_INTENTS_PROVISIONING_PROFILE_NAME: ${{ secrets.SIRI_INTENTS_PROVISIONING_PROFILE_NAME }}
           DISTRIBUTION_CERTIFICATE_NAME: ${{ secrets.DISTRIBUTION_CERTIFICATE_NAME }}
+
+      - name: Display .env.default file
+        run: cat element-ios/fastlane/.env.default
+      - name: Display AppIdentifiers.xcconfig file
+        run: cat element-ios/Config/AppIdentifiers.xcconfig
 
       # Возможно в Riot/SupportingFiles/Info.plist на самом деле нужно будет менять только значение ключа ITSEncryptionExportComplianceCode, а не весь блок 
       - name: Merge Repositories
