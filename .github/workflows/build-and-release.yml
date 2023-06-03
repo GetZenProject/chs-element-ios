@@ -104,24 +104,20 @@ jobs:
           SIRI_INTENTS_PROVISIONING_PROFILE_NAME: ${{ secrets.SIRI_INTENTS_PROVISIONING_PROFILE_NAME }}
           DISTRIBUTION_CERTIFICATE_NAME: ${{ secrets.DISTRIBUTION_CERTIFICATE_NAME }}
 
-      - name: Remove lines from fastlane/Fastfile
-        run: |
-          sed -i '/UI.user_error\!("\'SENTRY_AUTH_TOKEN\' environment variable should be set to use this lane, see Passbolt") unless !ENV\["SENTRY_AUTH_TOKEN"\].to_s.empty?/d' element-ios/fastlane/Fastfile
-          sed -i '/sentry_check_cli_installed/d' element-ios/fastlane/Fastfile
-          sed -i '/upload_dsyms_to_sentry/d' element-ios/fastlane/Fastfile
-
       # Возможно в Riot/SupportingFiles/Info.plist на самом деле нужно будет менять только значение ключа ITSEncryptionExportComplianceCode, а не весь блок 
       - name: Update encryption keys
         run: |
           sed -i 's/<key>ITSAppUsesNonExemptEncryption<\/key>\n\s*<true\/>\n\s*<key>ITSEncryptionExportComplianceCode<\/key>\n\s*<string>d1dd539c-d21c-43e2-92e2-212c5269565c<\/string>/<key>ITSAppUsesNonExemptEncryption<\/key>\n  <false\/>/g' element-ios/Riot/SupportingFiles/Info.plist
 
-      - name: Update deliver command
-        run: |
-          sed -i 's/deliver()/deliver(skip_metadata: true, skip_screenshots: true)/g' element-ios/fastlane/Fastfile
-
       - name: Merge Repositories
         run: |
           mv element-ios/* ./
+          rm fastlane/Fastfile
+          mv Fastfile fastlane/Fastfile
+
+      - name: Update deliver command in Fastfile
+        run: |
+          sed -i 's/deliver()/deliver(skip_metadata: true, skip_screenshots: true)/g' fastlane/Fastfile
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
