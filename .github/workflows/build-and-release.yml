@@ -40,55 +40,88 @@ jobs:
       - name: Reset MatrixSDK pod
         run: rm -rf Pods/MatrixSDK
 
-      # - name: Prepare Element IOS
-      #   run: |
-      #     git clone https://github.com/vector-im/element-ios.git
-      #     cd element-ios
-      #     git checkout master
-      #     cd ..
+      - name: Prepare Element IOS
+        run: |
+          git clone https://github.com/vector-im/element-ios.git
+          cd element-ios
+          git checkout master
+          cd ..
 
-      #     ВОТ ТУТ РАЗВЕ НЕ .github НАДО??? rm -rf element-ios/.git
+          rm -rf element-ios/.github
 
-      # - name: Edit Config
-      #   run: |
-      #  ИЗМЕНИТЬ ЗДЕСЬ (В этом файле (Config/BuildSettings.swift) еще есть matrix.org, нужно менять только один конкретный)      sed -i "s#matrix.org#$HOMESERVER#1" element-ios/Config/BuildSettings.swift
-      #   env:
-      #     HOMESERVER: ${{ secrets.HOMESERVER }}
+      - name: Edit Config
+        run: |
+          sed -i '' -e "s|\"https://matrix.org\"|\"https://${HOMESERVER}\"|g" element-ios/Config/BuildSettings.swift
+        env:
+          HOMESERVER: ${{ secrets.HOMESERVER }}
 
-      # - name: Prepare Repo
-      #   run: | ИЗМЕНИТЬ ЗДЕСЬ   
-      # 
-      #   ИЗМЕНЕНИЯ:
-      # 
-      #     В Config/AppIdentifiers.xcconfig:
-      #         1. BUNDLE_DISPLAY_NAME c Element на secrets.BUNDLE_DISPLAY_NAME
-      #         2. BASE_BUNDLE_IDENTIFIER c im.vector.app на secrets.BASE_BUNDLE_IDENTIFIER
-      #         3. APPLICATION_GROUP_IDENTIFIER c group.im.vector на secrets.GROUP_ID
-      #         4. DEVELOPMENT_TEAM c 7J4U792NQT на secrets.TEAM_ID
-      #         5. RIOT_PROVISIONING_PROFILE_SPECIFIER c Vector App Store на secrets.MAIN_PROVISIONING_PROFILE_NAME (в кавычках)
-      #         6. NSE_PROVISIONING_PROFILE_SPECIFIER c "Vector NSE: App Store" на secrets.NSE_PROVISIONING_PROFILE_NAME (в кавычках)
-      #         7. SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER c "Vector Share Extension: App Store" на secrets.SHARE_EXTENSION_PROVISIONING_PROFILE_NAME (в кавычках)
-      #         8. SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER c "Vector Siri Intents: App Store" на secrets.SIRI_INTENTS_PROVISIONING_PROFILE_NAME (в кавычках)
-      # 
-      #     В fastlane/.env/default:
-      #         1. IPA_NAME с Riot на CustomElement 
-      #         2. MAIN_BUNDLE_ID c im.vector.app на secrets.BASE_BUNDLE_IDENTIFIER
-      #         3. SHARE_EXTENSION_BUNDLE_ID c im.vector.app.shareExtension на secrets.BASE_BUNDLE_IDENTIFIER к которому приписали .shareExtension
-      #         4. SIRI_INTENTS_EXTENSION_BUNDLE_ID c im.vector.app.SiriIntents на secrets.BASE_BUNDLE_IDENTIFIER к которому приписали .SiriIntents
-      #         5. NSE_BUNDLE_ID c im.vector.app.nse на secrets.BASE_BUNDLE_IDENTIFIER к которому приписали .nse
-      #         6. APPSTORE_CODESIGNING_IDENTITY и APPSTORE_SIGNING_CERTIFICATE с "Apple Distribution: Vector Creations Limited (7J4U792NQT)" на secrets.DISTRIBUTION_CERTIFICATE_NAME (в кавычках)
-      #         7. APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER c "Vector App Store" на secrets.MAIN_PROVISIONING_PROFILE_NAME (в кавычках)
-      #         8. APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER c "Vector NSE: App Store" на secrets.NSE_PROVISIONING_PROFILE_NAME (в кавычках)
-      #         9. APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER c "Vector Share Extension: App Store" на secrets.SHARE_EXTENSION_PROVISIONING_PROFILE_NAME (в кавычках)
-      #         10. APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER c "Vector Siri Intents: App Store" на secrets.SIRI_INTENTS_PROVISIONING_PROFILE_NAME (в кавычках)
-      #         11. TEAM_ID c 7J4U792NQT на secrets.TEAM_ID
-      # 
-      #     Задокументировать/удалить 3 строчки в Fastfile
-      # 
-      #     Возможно в Riot/SupportingFiles/Info.plist понадобится менять несколько строк подряд, если да - будем сохранять файл и делать замену
-      # 
-      #   env:
-      #     ...
+      - name: Change different identifiers
+        run: | 
+
+          # Changes in Config/AppIdentifiers
+
+          sed -i '' 's/BUNDLE_DISPLAY_NAME = Element/BUNDLE_DISPLAY_NAME = ${BUNDLE_DISPLAY_NAME}/g' element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' 's/BASE_BUNDLE_IDENTIFIER = im.vector.app/BASE_BUNDLE_IDENTIFIER = ${BASE_BUNDLE_IDENTIFIER}/g' element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' 's/APPLICATION_GROUP_IDENTIFIER = group.im.vector/APPLICATION_GROUP_IDENTIFIER = ${GROUP_ID}/g' element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' 's/DEVELOPMENT_TEAM = 7J4U792NQT/DEVELOPMENT_TEAM = ${TEAM_ID}/g' element-ios/Config/AppIdentifiers.xcconfig
+          
+          sed -i '' 's/RIOT_PROVISIONING_PROFILE_SPECIFIER = Vector App Store/RIOT_PROVISIONING_PROFILE_SPECIFIER = "${MAIN_PROVISIONING_PROFILE_NAME}"/g' element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' 's/NSE_PROVISIONING_PROFILE_SPECIFIER = "Vector NSE: App Store"/NSE_PROVISIONING_PROFILE_SPECIFIER = "${NSE_PROVISIONING_PROFILE_NAME}"/g' element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' 's/SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = "Vector Share Extension: App Store"/SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = "${SHARE_EXTENSION_PROVISIONING_PROFILE_NAME}"/g' element-ios/Config/AppIdentifiers.xcconfig
+          sed -i '' 's/SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER = "Vector Siri Intents: App Store"/SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER = "${SIRI_INTENTS_PROVISIONING_PROFILE_NAME}"/g' element-ios/Config/AppIdentifiers.xcconfig
+          
+          # Changes in fastlane/.env.default
+
+          sed -i '' 's/IPA_NAME=Riot/IPA_NAME=CustomElement/g' element-ios/fastlane/.env.default
+
+          # Bundle_id
+          sed -i '' 's/MAIN_BUNDLE_ID=im.vector.app/MAIN_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}/g' element-ios/fastlane/.env.default
+          sed -i '' 's/SHARE_EXTENSION_BUNDLE_ID=im.vector.app.shareExtension/SHARE_EXTENSION_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.shareExtension/g' element-ios/fastlane/.env.default
+          sed -i '' 's/SIRI_INTENTS_EXTENSION_BUNDLE_ID=im.vector.app.SiriIntents/SIRI_INTENTS_EXTENSION_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.SiriIntents/g' element-ios/fastlane/.env.default
+          sed -i '' 's/NSE_BUNDLE_ID=im.vector.app.nse/NSE_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.nse/g' element-ios/fastlane/.env.default
+          
+          # Code Signing
+          sed -i '' 's/APPSTORE_CODESIGNING_IDENTITY="Apple Distribution: Vector Creations Limited (7J4U792NQT)"/APPSTORE_CODESIGNING_IDENTITY="${DISTRIBUTION_CERTIFICATE_NAME}"/g' element-ios/fastlane/.env.default
+          sed -i '' 's/APPSTORE_SIGNING_CERTIFICATE="Apple Distribution: Vector Creations Limited (7J4U792NQT)"/APPSTORE_SIGNING_CERTIFICATEs="${DISTRIBUTION_CERTIFICATE_NAME}"/g' element-ios/fastlane/.env.default
+          
+          # Provisioning profiles
+          sed -i '' 's/APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER="Vector App Store"/APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER="${MAIN_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
+          sed -i '' 's/APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER="Vector NSE: App Store"/APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER="${NSE_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
+          sed -i '' 's/APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="Vector Share Extension: App Store"/APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="${SHARE_EXTENSION_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
+          sed -i '' 's/APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="Vector Siri Intents: App Store"/APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER="${SIRI_INTENTS_PROVISIONING_PROFILE_NAME}"/g' element-ios/fastlane/.env.default
+          
+          
+          sed -i '' 's/TEAM_ID=7J4U792NQT/TEAM_ID=${TEAM_ID}/g' element-ios/fastlane/.env.default
+        
+        env:
+          BUNDLE_DISPLAY_NAME: ${{ secrets.BUNDLE_DISPLAY_NAME }}
+          BASE_BUNDLE_IDENTIFIER: ${{ secrets.BASE_BUNDLE_IDENTIFIER }}
+          GROUP_ID: ${{ secrets.GROUP_ID }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          MAIN_PROVISIONING_PROFILE_NAME: ${{ secrets.MAIN_PROVISIONING_PROFILE_NAME }}
+          NSE_PROVISIONING_PROFILE_NAME: ${{ secrets.NSE_PROVISIONING_PROFILE_NAME }}
+          SHARE_EXTENSION_PROVISIONING_PROFILE_NAME: ${{ secrets.SHARE_EXTENSION_PROVISIONING_PROFILE_NAME }}
+          SIRI_INTENTS_PROVISIONING_PROFILE_NAME: ${{ secrets.SIRI_INTENTS_PROVISIONING_PROFILE_NAME }}
+          DISTRIBUTION_CERTIFICATE_NAME: ${{ secrets.DISTRIBUTION_CERTIFICATE_NAME }}
+
+      - name: Remove lines from fastlane/Fastfile
+        run: |
+          sed -i '/UI.user_error\!("\'SENTRY_AUTH_TOKEN\' environment variable should be set to use this lane, see Passbolt") unless !ENV\["SENTRY_AUTH_TOKEN"\].to_s.empty?/d' element-ios/fastlane/Fastfile
+          sed -i '/sentry_check_cli_installed/d' element-ios/fastlane/Fastfile
+          sed -i '/upload_dsyms_to_sentry/d' element-ios/fastlane/Fastfile
+
+      # Возможно в Riot/SupportingFiles/Info.plist на самом деле нужно будет менять только значение ключа ITSEncryptionExportComplianceCode, а не весь блок 
+      - name: Update encryption keys
+        run: |
+          sed -i 's/<key>ITSAppUsesNonExemptEncryption<\/key>\n\s*<true\/>\n\s*<key>ITSEncryptionExportComplianceCode<\/key>\n\s*<string>d1dd539c-d21c-43e2-92e2-212c5269565c<\/string>/<key>ITSAppUsesNonExemptEncryption<\/key>\n  <false\/>/g' element-ios/Riot/SupportingFiles/Info.plist
+
+      - name: Update deliver command
+        run: |
+          sed -i 's/deliver()/deliver(skip_metadata: true, skip_screenshots: true)/g' element-ios/fastlane/Fastfile
+
+      - name: Merge Repositories
+        run: |
+          mv element-ios/* ./
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
