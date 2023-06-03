@@ -40,6 +40,15 @@ jobs:
       - name: Reset MatrixSDK pod
         run: rm -rf Pods/MatrixSDK
 
+      # Common setup
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - name: Brew bundle
+        run: brew bundle
+      - name: Bundle install
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
       - name: Prepare Element IOS
         run: |
           git clone https://github.com/vector-im/element-ios.git
@@ -117,14 +126,6 @@ jobs:
         run: |
           sed -i '' 's/deliver()/deliver(skip_metadata: true, skip_screenshots: true)/g' fastlane/Fastfile
 
-      # Common setup
-      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      - name: Brew bundle
-        run: brew bundle
-      - name: Bundle install
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
       - name: Use right MatrixSDK versions
         run: bundle exec fastlane point_dependencies_to_related_branches
 
