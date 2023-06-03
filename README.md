@@ -138,3 +138,45 @@ here we initialize *MAIN_PROVISIONING_PROFILE_NAME*, *SHARE_EXTENSION_PROVISIONI
 5. select distribution certificate that we create recently and click **Continue**
 6. provide **Name**  (somethink like `Element App_Name [Name_of_extension]`) and copy it to *MAIN_PROVISIONING_PROFILE_NAME*, *SHARE_EXTENSION_PROVISIONING_PROFILE_NAME*, *SIRI_INTENTS_PROVISIONING_PROFILE_NAME* and *NSE_PROVISIONING_PROFILE_NAME* secrets of your repository for App, Share Extension, Siri Intents Extension and NSE respectively
 7. click **Generate**
+
+## Send information about app for enable encryption
+
+Requirenments:
+1. email should be send to both `crypt-supp8@bis.doc.gov` and `enc@nsa.gov`
+2. email subject should be `Self-Classification Report for Encryption Items`
+3. the body of email should be left blank
+4. email should contain `.csv` file with following information:
+```
+PRODUCT NAME, MODEL NUMBER, MANUFACTURER, ECCN, AUTHORIZATION TYPE, ITEM TYPE, SUBMITTER NAME, TELEPHONE NUMBER, E-MAIL ADDRESS, MAILING ADDRESS, NON-U.S. COMPONENTS, NON-U.S. MANUFACTURING LOCATIONS
+Element for get(zen)·dev,N/A,SELF,5D002,MMKT,Mobility and mobile applications n.e.s.,Get(zen)·dev,+34-603-529-001,alex.p@getzen.dev,"Vasili Michailidi 9 3026 Limassol Cyprus",NO,UK France
+```
+
+## Enable encryption at App Store Connect
+
+1. go to [App Store Connect](https://appstoreconnect.apple.com)
+2. From **My Apps**, select your app. The page opens with the App Store tab selected.
+3. Click the **Services** (**Features**) tab, and in the sidebar, click **Encryption**.
+4. Click the **add** button (+).
+5. You should answer on several questions:
+    1. Does your app use encryption? Yes
+    2. Does your app qualify for any of the exemptions provided in Category 5, Part 2 of the U.S. Export Administration Regulations? Yes
+    3. Does your app implement any encryption algorithms that are proprietary or not accepted as standards by international standard bodies (IEEE, IETF, ITU, etc.)? Yes
+    4. Does your app implement any standard encryption algorithms instead of, or in addition to, using or accessing the encryption within Apple’s operating system? Yes
+    5. Is your app going to be available on the App Store in France? No (не успела разобраться с документами, которые нужно предоставить, прочитать о них можно [тут](https://developer.apple.com/help/app-store-connect/reference/export-compliance-documentation-for-encryption))
+
+## Comment about the warning message in the mail
+
+after deploying the application to the app store connect, you'll get email with the following content:
+
+```
+Dear Developer,
+We identified one or more issues with a recent delivery for your app, "[Name of APP]". Your delivery was successful, but you may wish to correct the following issues in your next delivery:
+ITMS-90626: Invalid Siri Support - No example phrase was provided for INStartAudioCallIntent in the 'ru' language. Please refer to 'https://developer.apple.com/documentation/sirikit /registering_custom_vocabulary_with_sirikit/global_vocabulary_reference/intent_phrases'
+ITMS-90626: Invalid Siri Support - No example phrase was provided for INSendMessageIntent in the
+'de' language. Please refer to 'https://developer.apple.com/documentation/sirikit /registering_custom_vocabulary_with_sirikit/global_vocabulary_reference/intent_phrases"
+... (a lot of such strings)
+```
+
+> receiving this warning message is not a stopper for the deployment
+
+It can be solved by providing example phrases for each of these three intents: **INStartAudioCallIntent**, **INStartVideoCallIntent** and **INSendMessageIntent**. `AppIntentVocabulary.plist` file (example [here](https://gist.github.com/mitch2be/6e49d5e07e567bbc4d049bc565dad473)) with example phrases should be added to the appropriate `.lproj` folder for each of the languages in [this folder](https://github.com/vector-im/element-ios/tree/c87b8e25e136f68e0187b295613db9d836fa065a/Riot/Assets) of original element-ios
