@@ -81,8 +81,8 @@ jobs:
           sed -i '' -e "s#NSE_BUNDLE_ID=im.vector.app.nse#NSE_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.nse#g" element-ios/fastlane/.env.default
           
           # Code Signing
-          sed -i '' -e 's#APPSTORE_CODESIGNING_IDENTITY="Apple Distribution: Vector Creations Limited (7J4U792NQT)"#APPSTORE_CODESIGNING_IDENTITY=\"${DISTRIBUTION_CERTIFICATE_NAME}\"#g' element-ios/fastlane/.env.default
-          sed -i '' -e 's#APPSTORE_SIGNING_CERTIFICATE="Apple Distribution: Vector Creations Limited (7J4U792NQT)"#APPSTORE_SIGNING_CERTIFICATE=\"${DISTRIBUTION_CERTIFICATE_NAME}\"#g' element-ios/fastlane/.env.default
+          sed -i '' -e "s#APPSTORE_CODESIGNING_IDENTITY=\"Apple Distribution: Vector Creations Limited (7J4U792NQT)\"#APPSTORE_CODESIGNING_IDENTITY=\"${DISTRIBUTION_CERTIFICATE_NAME}\"#g" element-ios/fastlane/.env.default
+          sed -i '' -e "s#APPSTORE_SIGNING_CERTIFICATE=\"Apple Distribution: Vector Creations Limited (7J4U792NQT)\"#APPSTORE_SIGNING_CERTIFICATE=\"${DISTRIBUTION_CERTIFICATE_NAME}\"#g" element-ios/fastlane/.env.default
           
           # Provisioning profiles
           sed -i '' -e "s#APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER=\"Vector App Store\"#APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER=\"${MAIN_PROVISIONING_PROFILE_NAME}\"#g" element-ios/fastlane/.env.default
@@ -125,26 +125,26 @@ jobs:
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      - name: Brew bundle
-        run: brew bundle
-      - name: Bundle install
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
-      - name: Use right MatrixSDK versions
-        run: bundle exec fastlane point_dependencies_to_related_branches
+      # - name: Brew bundle
+      #   run: brew bundle
+      # - name: Bundle install
+      #   run: |
+      #     bundle config path vendor/bundle
+      #     bundle install --jobs 4 --retry 3
+      # - name: Use right MatrixSDK versions
+      #   run: bundle exec fastlane point_dependencies_to_related_branches
 
       # Import private signing certificate
-      - name: Import signing certificate
-        uses: apple-actions/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.CERTIFICATE_P12 }}
-          p12-password: ${{ secrets.CERTIFICATE_P12_PASSWORD }}
+      # - name: Import signing certificate
+      #   uses: apple-actions/import-codesign-certs@v1
+      #   with:
+      #     p12-file-base64: ${{ secrets.CERTIFICATE_P12 }}
+      #     p12-password: ${{ secrets.CERTIFICATE_P12_PASSWORD }}
 
       # Main step
-      - name: Deploy and release IOS app 
-        run: bundle exec fastlane deploy_release 
-        env:
-          APPSTORECONNECT_KEY_ID: ${{ secrets.APPSTORECONNECT_KEY_ID }}
-          APPSTORECONNECT_KEY_ISSUER_ID: ${{ secrets.APPSTORECONNECT_KEY_ISSUER_ID }}
-          APPSTORECONNECT_KEY_CONTENT: ${{ secrets.APPSTORECONNECT_KEY_CONTENT }}
+      # - name: Deploy and release IOS app 
+      #   run: bundle exec fastlane deploy_release 
+      #   env:
+      #     APPSTORECONNECT_KEY_ID: ${{ secrets.APPSTORECONNECT_KEY_ID }}
+      #     APPSTORECONNECT_KEY_ISSUER_ID: ${{ secrets.APPSTORECONNECT_KEY_ISSUER_ID }}
+      #     APPSTORECONNECT_KEY_CONTENT: ${{ secrets.APPSTORECONNECT_KEY_CONTENT }}
