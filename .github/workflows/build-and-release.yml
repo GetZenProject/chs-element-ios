@@ -103,6 +103,8 @@ jobs:
           SIRI_INTENTS_PROVISIONING_PROFILE_NAME: ${{ secrets.SIRI_INTENTS_PROVISIONING_PROFILE_NAME }}
           DISTRIBUTION_CERTIFICATE_NAME: ${{ secrets.DISTRIBUTION_CERTIFICATE_NAME }}
 
+      - name: Display config file
+        run: cat element-ios/Config/BuildSettings.swift
       - name: Display .env.default file
         run: cat element-ios/fastlane/.env.default
       - name: Display AppIdentifiers.xcconfig file

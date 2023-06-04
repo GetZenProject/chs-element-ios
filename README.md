@@ -155,14 +155,23 @@ Element for get(zen)·dev,N/A,SELF,5D002,MMKT,Mobility and mobile applications n
 
 1. go to [App Store Connect](https://appstoreconnect.apple.com)
 2. From **My Apps**, select your app. The page opens with the App Store tab selected.
-3. Click the **Services** (**Features**) tab, and in the sidebar, click **Encryption**.
+3. Click the **Services** tab, and in the sidebar, click **Encryption**.
 4. Click the **add** button (+).
 5. You should answer on several questions:
     1. Does your app use encryption? Yes
     2. Does your app qualify for any of the exemptions provided in Category 5, Part 2 of the U.S. Export Administration Regulations? Yes
-    3. Does your app implement any encryption algorithms that are proprietary or not accepted as standards by international standard bodies (IEEE, IETF, ITU, etc.)? Yes
-    4. Does your app implement any standard encryption algorithms instead of, or in addition to, using or accessing the encryption within Apple’s operating system? Yes
-    5. Is your app going to be available on the App Store in France? No (не успела разобраться с документами, которые нужно предоставить, прочитать о них можно [тут](https://developer.apple.com/help/app-store-connect/reference/export-compliance-documentation-for-encryption))
+    3. Click **Start Internal Testing**
+
+## Add Test Information
+
+1. go to [App Store Connect](https://appstoreconnect.apple.com)
+2. From **My Apps**, select your app. The page opens with the App Store tab selected.
+3. Click the **Testflight** tab, and in the sidebar, under **General Information**, click **Test Information**.
+4. On the right, choose **English** language
+5. In the **Beta App Description** text field, enter a description of your beta version.
+6. In the **Feedback Email** field, enter the email address that testers can use to contact you through the TestFlight app. This is also the reply-to address in email invitations to testers.
+7. In **Beta App Review Information** provide **Contact Information** (all fields)
+8. Click on **Sign-in required** and add information about **Demo account** (login and password)
 
 ## Comment about the warning message in the mail
 

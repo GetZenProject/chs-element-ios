@@ -89,7 +89,8 @@ platform :ios do
     # build the IPA
     app_store(options)
     # upload the IPA and metadata
-    deliver(skip_metadata: true, skip_screenshots: true)
+    deliver(skip_metadata: true, 
+    skip_screenshots: true)
 
     # We haven't yet implemented/tested deliver/upload_to_appstore properly so keep it manual for now
     # UI.message("IPA is available at path '#{ENV['IPA_OUTPUT_PATH']}'. Please upload manually using Application Loader.")
