@@ -46,6 +46,7 @@ jobs:
           cd element-ios
 
           git checkout ef4d85d6cacee80ebe24718ac77071ad50d41135
+          git status
           
           cd ..
 
@@ -113,49 +114,49 @@ jobs:
         run: cat element-ios/Config/AppIdentifiers.xcconfig
 
       # Возможно в Riot/SupportingFiles/Info.plist на самом деле нужно будет менять только значение ключа ITSEncryptionExportComplianceCode, а не весь блок 
-      - name: Merge Repositories
-        run: |
-          mv element-ios/* ./
-          rm fastlane/Fastfile
-          rm Riot/SupportingFiles/Info.plist
-          mv Fastfile fastlane/Fastfile
-          mv Info.plist Riot/SupportingFiles/Info.plist
-
-      - name: Diawi plugin fix
-        run: |
-          rm fastlane/Pluginfile
-          rm Gemfile.lock
-          mv temp_files/Pluginfile fastlane/Pluginfile
-          mv temp_files/Gemfile.lock Gemfile.lock
-
-      # - name: Delete Diawi plugin 
+      # - name: Merge Repositories
       #   run: |
-      #     sed -i '' "/gem 'fastlane-plugin-diawi'/d" fastlane/Pluginfile
-      #     sed -i '' -e '/fastlane-plugin-diawi (2.1.0)/d' Gemfile.lock
-      #     sed -i '' -e '/fastlane-plugin-diawi/d' Gemfile.lock
+      #     mv element-ios/* ./
+      #     rm fastlane/Fastfile
+      #     rm Riot/SupportingFiles/Info.plist
+      #     mv Fastfile fastlane/Fastfile
+      #     mv Info.plist Riot/SupportingFiles/Info.plist
 
-      # Common setup
-      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      - name: Brew bundle
-        run: brew bundle
-      - name: Bundle install
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
-      - name: Use right MatrixSDK versions
-        run: bundle exec fastlane point_dependencies_to_related_branches
+      # - name: Diawi plugin fix
+      #   run: |
+      #     rm fastlane/Pluginfile
+      #     rm Gemfile.lock
+      #     mv temp_files/Pluginfile fastlane/Pluginfile
+      #     mv temp_files/Gemfile.lock Gemfile.lock
 
-      # Import private signing certificate
-      - name: Import signing certificate
-        uses: apple-actions/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.CERTIFICATE_P12 }}
-          p12-password: ${{ secrets.CERTIFICATE_P12_PASSWORD }}
+      # # - name: Delete Diawi plugin 
+      # #   run: |
+      # #     sed -i '' "/gem 'fastlane-plugin-diawi'/d" fastlane/Pluginfile
+      # #     sed -i '' -e '/fastlane-plugin-diawi (2.1.0)/d' Gemfile.lock
+      # #     sed -i '' -e '/fastlane-plugin-diawi/d' Gemfile.lock
 
-      # Main step
-      - name: Deploy and release IOS app 
-        run: bundle exec fastlane deploy_release 
-        env:
-          APPSTORECONNECT_KEY_ID: ${{ secrets.APPSTORECONNECT_KEY_ID }}
-          APPSTORECONNECT_KEY_ISSUER_ID: ${{ secrets.APPSTORECONNECT_KEY_ISSUER_ID }}
-          APPSTORECONNECT_KEY_CONTENT: ${{ secrets.APPSTORECONNECT_KEY_CONTENT }}
+      # # Common setup
+      # # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      # - name: Brew bundle
+      #   run: brew bundle
+      # - name: Bundle install
+      #   run: |
+      #     bundle config path vendor/bundle
+      #     bundle install --jobs 4 --retry 3
+      # - name: Use right MatrixSDK versions
+      #   run: bundle exec fastlane point_dependencies_to_related_branches
+
+      # # Import private signing certificate
+      # - name: Import signing certificate
+      #   uses: apple-actions/import-codesign-certs@v1
+      #   with:
+      #     p12-file-base64: ${{ secrets.CERTIFICATE_P12 }}
+      #     p12-password: ${{ secrets.CERTIFICATE_P12_PASSWORD }}
+
+      # # Main step
+      # - name: Deploy and release IOS app 
+      #   run: bundle exec fastlane deploy_release 
+      #   env:
+      #     APPSTORECONNECT_KEY_ID: ${{ secrets.APPSTORECONNECT_KEY_ID }}
+      #     APPSTORECONNECT_KEY_ISSUER_ID: ${{ secrets.APPSTORECONNECT_KEY_ISSUER_ID }}
+      #     APPSTORECONNECT_KEY_CONTENT: ${{ secrets.APPSTORECONNECT_KEY_CONTENT }}
