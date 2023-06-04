@@ -114,7 +114,7 @@ jobs:
         run: cat element-ios/Config/AppIdentifiers.xcconfig
 
       # Возможно в Riot/SupportingFiles/Info.plist на самом деле нужно будет менять только значение ключа ITSEncryptionExportComplianceCode, а не весь блок 
-      - name: Merge Repositories
+      - name: Change Repository
         run: |
           # mv element-ios/* ./
           rm element-ios/fastlane/Fastfile
@@ -128,6 +128,10 @@ jobs:
           rm element-ios/Gemfile.lock
           mv temp_files/Pluginfile element-ios/fastlane/Pluginfile
           mv temp_files/Gemfile.lock element-ios/Gemfile.lock
+
+      - name: Checkout Repository
+        run: |
+          cd ./element-ios
 
       # - name: Delete Diawi plugin 
       #   run: |
