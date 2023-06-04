@@ -45,8 +45,7 @@ jobs:
           git clone https://github.com/vector-im/element-ios.git
           cd element-ios
 
-          git checkout develop
-          git checkout ef4d85d6cacee80ebe24718ac77071ad50d41135
+          git checkout master
           git status
           
           cd ..
