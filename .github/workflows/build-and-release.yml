@@ -124,9 +124,9 @@ jobs:
       - name: Diawi plugin fix
         run: |
           rm element-ios/fastlane/Pluginfile
-          rm element-ios/Gemfile.lock
+          # rm element-ios/Gemfile.lock
           mv temp_files/Pluginfile element-ios/fastlane/Pluginfile
-          mv temp_files/Gemfile.lock element-ios/Gemfile.lock
+          # mv temp_files/Gemfile.lock element-ios/Gemfile.lock
 
       - name: Merge Repositories
         run: |
