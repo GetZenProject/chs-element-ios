@@ -51,7 +51,7 @@ jobs:
           
           cd ..
 
-          rm -rf element-ios/.github
+          rm -rf element-ios/.git
 
       - name: Edit Config
         run: |
