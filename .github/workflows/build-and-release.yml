@@ -116,18 +116,18 @@ jobs:
       # Возможно в Riot/SupportingFiles/Info.plist на самом деле нужно будет менять только значение ключа ITSEncryptionExportComplianceCode, а не весь блок 
       - name: Merge Repositories
         run: |
-          mv element-ios/* ./
-          rm fastlane/Fastfile
-          rm Riot/SupportingFiles/Info.plist
-          mv Fastfile fastlane/Fastfile
-          mv Info.plist Riot/SupportingFiles/Info.plist
+          # mv element-ios/* ./
+          rm element-ios/fastlane/Fastfile
+          rm element-ios/Riot/SupportingFiles/Info.plist
+          mv Fastfile element-ios/fastlane/Fastfile
+          mv Info.plist element-ios/Riot/SupportingFiles/Info.plist
 
       - name: Diawi plugin fix
         run: |
-          rm fastlane/Pluginfile
-          rm Gemfile.lock
-          mv temp_files/Pluginfile fastlane/Pluginfile
-          mv temp_files/Gemfile.lock Gemfile.lock
+          rm element-ios/fastlane/Pluginfile
+          rm element-ios/Gemfile.lock
+          mv temp_files/Pluginfile element-ios/fastlane/Pluginfile
+          mv temp_files/Gemfile.lock element-ios/Gemfile.lock
 
       # - name: Delete Diawi plugin 
       #   run: |
