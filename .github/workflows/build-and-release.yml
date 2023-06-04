@@ -44,7 +44,9 @@ jobs:
         run: |
           git clone https://github.com/vector-im/element-ios.git
           cd element-ios
-          git checkout master
+
+          # git checkout master
+          
           cd ..
 
           rm -rf element-ios/.github
@@ -59,7 +61,6 @@ jobs:
         run: | 
 
           # Changes in Config/AppIdentifiers
-
           sed -i '' -e "s#BUNDLE_DISPLAY_NAME = Element#BUNDLE_DISPLAY_NAME = ${BUNDLE_DISPLAY_NAME}#g" element-ios/Config/AppIdentifiers.xcconfig
           sed -i '' -e "s#BASE_BUNDLE_IDENTIFIER = im.vector.app#BASE_BUNDLE_IDENTIFIER = ${BASE_BUNDLE_IDENTIFIER}#g" element-ios/Config/AppIdentifiers.xcconfig
           sed -i '' -e "s#APPLICATION_GROUP_IDENTIFIER = group.im.vector#APPLICATION_GROUP_IDENTIFIER = ${GROUP_ID}#g" element-ios/Config/AppIdentifiers.xcconfig
