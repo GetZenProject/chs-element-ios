@@ -119,11 +119,11 @@ jobs:
           mv Fastfile fastlane/Fastfile
           mv Info.plist Riot/SupportingFiles/Info.plist
 
-      - name: Delete Diawi plugin 
-        run: |
-          sed -i '' "/gem 'fastlane-plugin-diawi'/d" fastlane/Pluginfile
-          sed -i '' -e '/fastlane-plugin-diawi (2.1.0)/d' Gemfile.lock
-          sed -i '' -e '/fastlane-plugin-diawi/d' Gemfile.lock
+      # - name: Delete Diawi plugin 
+      #   run: |
+      #     sed -i '' "/gem 'fastlane-plugin-diawi'/d" fastlane/Pluginfile
+      #     sed -i '' -e '/fastlane-plugin-diawi (2.1.0)/d' Gemfile.lock
+      #     sed -i '' -e '/fastlane-plugin-diawi/d' Gemfile.lock
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
