@@ -45,7 +45,7 @@ jobs:
           git clone https://github.com/vector-im/element-ios.git
           cd element-ios
 
-          # git checkout master
+          git checkout master
           
           cd ..
 
@@ -61,6 +61,7 @@ jobs:
         run: | 
 
           # Changes in Config/AppIdentifiers
+
           sed -i '' -e "s#BUNDLE_DISPLAY_NAME = Element#BUNDLE_DISPLAY_NAME = ${BUNDLE_DISPLAY_NAME}#g" element-ios/Config/AppIdentifiers.xcconfig
           sed -i '' -e "s#BASE_BUNDLE_IDENTIFIER = im.vector.app#BASE_BUNDLE_IDENTIFIER = ${BASE_BUNDLE_IDENTIFIER}#g" element-ios/Config/AppIdentifiers.xcconfig
           sed -i '' -e "s#APPLICATION_GROUP_IDENTIFIER = group.im.vector#APPLICATION_GROUP_IDENTIFIER = ${GROUP_ID}#g" element-ios/Config/AppIdentifiers.xcconfig
@@ -119,6 +120,13 @@ jobs:
           rm Riot/SupportingFiles/Info.plist
           mv Fastfile fastlane/Fastfile
           mv Info.plist Riot/SupportingFiles/Info.plist
+
+      - name: Temp fix
+        run: |
+          rm fastlane/Pluginfile
+          rm Gemfile.lock
+          mv help_files/Pluginfile fastlane/Pluginfile
+          mv help_files/Gemfile.lock Gemfile.lock
 
       # - name: Delete Diawi plugin 
       #   run: |
