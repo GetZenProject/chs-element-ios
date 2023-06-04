@@ -116,11 +116,10 @@ jobs:
       # Возможно в Riot/SupportingFiles/Info.plist на самом деле нужно будет менять только значение ключа ITSEncryptionExportComplianceCode, а не весь блок 
       - name: Change Repository
         run: |
-          # mv element-ios/* ./
           rm element-ios/fastlane/Fastfile
           rm element-ios/Riot/SupportingFiles/Info.plist
-          mv Fastfile element-ios/fastlane/Fastfile
-          mv Info.plist element-ios/Riot/SupportingFiles/Info.plist
+          mv temp_files/Fastfile element-ios/fastlane/Fastfile
+          mv temp_files/Info.plist element-ios/Riot/SupportingFiles/Info.plist
 
       - name: Diawi plugin fix
         run: |
@@ -129,15 +128,9 @@ jobs:
           mv temp_files/Pluginfile element-ios/fastlane/Pluginfile
           mv temp_files/Gemfile.lock element-ios/Gemfile.lock
 
-      - name: Checkout Repository
+      - name: Merge Repositories
         run: |
-          cd ./element-ios
-
-      # - name: Delete Diawi plugin 
-      #   run: |
-      #     sed -i '' "/gem 'fastlane-plugin-diawi'/d" fastlane/Pluginfile
-      #     sed -i '' -e '/fastlane-plugin-diawi (2.1.0)/d' Gemfile.lock
-      #     sed -i '' -e '/fastlane-plugin-diawi/d' Gemfile.lock
+          mv element-ios/* ./
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
