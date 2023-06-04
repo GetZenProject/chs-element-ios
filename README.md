@@ -94,9 +94,11 @@ here we initialize *BASE_BUNDLE_IDENTIFIER* secret
 7. copy bundle ID to *BASE_BUNDLE_IDENTIFIER* secret of your repository
 8. select **Capabilities**
 9. enable **ICloud** (with **Include CloudKit support**), then click **Edit**, select iCloud container that you have created (`iCloud.[base_app_id]`) and click **Continue**
-10. enable **Siri**, **associated-domains** and **push notifications** ДОБАВИТЬ СЮДА ВЫБОР ICLOUD
-11. enable **App Groups** from **Capabilities** ДОБАВИТЬ СЮДА ВЫБОР СОЗДАННОЙ ГРУППЫ
-12. click **Continue**
+10. enable **SiriKit**, **associated-domains** and **push notifications**
+11. enable **App Groups** from **Capabilities** 
+12. for **App Groups** click **Edit** button and choose a newly created group, then click **Continue**, click **Save**
+13. click **Continue**
+14. click **Register**
 
 ## Create App ID for Share Extension and Siri Intents
 
@@ -108,8 +110,10 @@ You should do it 2 times for each of Extensions: Share Extension and Siri Intent
 4. select **App** type and click **Continue**
 5. provide description
 6. choose **explicit** for bundle ID and enter it `([base_app_id].shareExtension, dev.[base_app_id].SiriIntents for Share Extension and Siri Intents Extension respectively)` 
-7. choose **App Groups** from **Capabilities** ДОБАВИТЬ СЮДА ВЫБОР СОЗДАННОЙ ГРУППЫ
-8. click **Continue**
+7. choose **App Groups** from **Capabilities**
+8. for **App Groups** click **Edit** button and choose a newly created group, then click **Continue**, click **Save**
+9. click **Continue**
+10. click **Register**
 
 ## Create App ID for NSE
 
@@ -120,10 +124,12 @@ You should do it 2 times for each of Extensions: Share Extension and Siri Intent
 5. provide description
 6. choose **explicit** for bundle ID and `[base_app_id].nse` 
 7. select **Capabilities**
-8. enable **App Groups** ДОБАВИТЬ СЮДА ВЫБОР СОЗДАННОЙ ГРУППЫ
-9. select **Additional Capabilities** 
-10. enable **Notification (NSE) Filtering**
-11. click **Continue**
+8. enable **App Groups** 
+9. for **App Groups** click **Edit** button and choose a newly created group, then click **Continue**, click **Save**
+10. select **Additional Capabilities** 
+11. enable **Notification (NSE) Filtering**
+12. click **Continue**
+13. click **Register**
 
 ## Create Provisioning Profiles
 
