@@ -151,10 +151,9 @@ Requirenments:
 1. email should be send to both `crypt-supp8@bis.doc.gov` and `enc@nsa.gov`
 2. email subject should be `Self-Classification Report for Encryption Items`
 3. the body of email should be left blank
-4. email should contain `.csv` file with following information:
+4. email should contain `.csv` file with information for following 12 points:
 ```
 PRODUCT NAME, MODEL NUMBER, MANUFACTURER, ECCN, AUTHORIZATION TYPE, ITEM TYPE, SUBMITTER NAME, TELEPHONE NUMBER, E-MAIL ADDRESS, MAILING ADDRESS, NON-U.S. COMPONENTS, NON-U.S. MANUFACTURING LOCATIONS
-Element for get(zen)·dev,N/A,SELF,5D002,MMKT,Mobility and mobile applications n.e.s.,Get(zen)·dev,+34-603-529-001,alex.p@getzen.dev,"Vasili Michailidi 9 3026 Limassol Cyprus",NO,UK France
 ```
 
 ## Enable encryption at App Store Connect
