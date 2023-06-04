@@ -121,12 +121,12 @@ jobs:
           mv Fastfile fastlane/Fastfile
           mv Info.plist Riot/SupportingFiles/Info.plist
 
-      # - name: Diawi plugin fix
-      #   run: |
-      #     rm fastlane/Pluginfile
-      #     rm Gemfile.lock
-      #     mv temp_files/Pluginfile fastlane/Pluginfile
-      #     mv temp_files/Gemfile.lock Gemfile.lock
+      - name: Diawi plugin fix
+        run: |
+          rm fastlane/Pluginfile
+          rm Gemfile.lock
+          mv temp_files/Pluginfile fastlane/Pluginfile
+          mv temp_files/Gemfile.lock Gemfile.lock
 
       # - name: Delete Diawi plugin 
       #   run: |
