@@ -81,8 +81,8 @@ jobs:
           sed -i '' -e "s#NSE_BUNDLE_ID=im.vector.app.nse#NSE_BUNDLE_ID=${BASE_BUNDLE_IDENTIFIER}.nse#g" element-ios/fastlane/.env.default
           
           # Code Signing
-          sed -i '' -e 's#APPSTORE_CODESIGNING_IDENTITY="Apple Distribution: Vector Creations Limited (7J4U792NQT)"#APPSTORE_CODESIGNING_IDENTITY="${DISTRIBUTION_CERTIFICATE_NAME}"#g' element-ios/fastlane/.env.default
-          sed -i '' -e 's#APPSTORE_SIGNING_CERTIFICATE="Apple Distribution: Vector Creations Limited (7J4U792NQT)"#APPSTORE_SIGNING_CERTIFICATE="${DISTRIBUTION_CERTIFICATE_NAME}"#g' element-ios/fastlane/.env.default
+          sed -i '' -e 's#APPSTORE_CODESIGNING_IDENTITY="Apple Distribution: Vector Creations Limited (7J4U792NQT)"#APPSTORE_CODESIGNING_IDENTITY=\"${DISTRIBUTION_CERTIFICATE_NAME}\"#g' element-ios/fastlane/.env.default
+          sed -i '' -e 's#APPSTORE_SIGNING_CERTIFICATE="Apple Distribution: Vector Creations Limited (7J4U792NQT)"#APPSTORE_SIGNING_CERTIFICATE=\"${DISTRIBUTION_CERTIFICATE_NAME}\"#g' element-ios/fastlane/.env.default
           
           # Provisioning profiles
           sed -i '' -e "s#APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER=\"Vector App Store\"#APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER=\"${MAIN_PROVISIONING_PROFILE_NAME}\"#g" element-ios/fastlane/.env.default
