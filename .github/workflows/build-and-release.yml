@@ -140,7 +140,7 @@ jobs:
               echo "Don't need replacement"
           else
               # Perform the sed replacement
-              sed -i '' -e "s/$template_string/$replacement_string/g" "$file_path"
+              sed -i '' -e "s#${template_string}#${replacement_string}#g" "$file_path"
               echo "Replacement completed!"
           fi
 
