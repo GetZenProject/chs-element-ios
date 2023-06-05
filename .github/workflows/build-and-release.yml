@@ -137,11 +137,11 @@ jobs:
 
           # Check if the template string exists in the file using grep
           if grep -q "$replacement_string" "$file_path"; then
+              echo "Don't need replacement"
+          else
               # Perform the sed replacement
               sed -i "s/$template_string/$replacement_string/g" "$file_path"
               echo "Replacement completed!"
-          else
-              echo "Template string not found in the file."
           fi
 
           cat element-ios/fastlane/Pluginfile
