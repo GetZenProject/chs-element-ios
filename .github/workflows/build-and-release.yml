@@ -123,10 +123,28 @@ jobs:
 
       - name: Diawi plugin fix
         run: |
-          rm element-ios/fastlane/Pluginfile
-          # rm element-ios/Gemfile.lock
-          mv temp_files/Pluginfile element-ios/fastlane/Pluginfile
-          # mv temp_files/Gemfile.lock element-ios/Gemfile.lock
+          # rm element-ios/fastlane/Pluginfile
+          # mv temp_files/Pluginfile element-ios/fastlane/Pluginfile
+
+          # File path to modify
+          file_path="element-ios/fastlane/Pluginfile"
+
+          # Template string to search
+          template_string="gem 'fastlane-plugin-diawi'"
+
+          # Replacement string
+          replacement_string="gem 'fastlane-plugin-diawi', git: 'https://github.com/mhtranbn/fastlane-plugin-diawi.git'"
+
+          # Check if the template string exists in the file using grep
+          if grep -q "$replacement_string" "$file_path"; then
+              # Perform the sed replacement
+              sed -i "s/$template_string/$replacement_string/g" "$file_path"
+              echo "Replacement completed!"
+          else
+              echo "Template string not found in the file."
+          fi
+
+          cat element-ios/fastlane/Pluginfile
 
       - name: Merge Repositories
         run: |
